@@ -1,0 +1,45 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - .cicd/docker/Dockerfile-ai-r-core-api-base
+
+pr: none
+
+variables:
+  dockerfile: '.cicd/docker/Dockerfile-ai-r-core-api-base'
+  repository: qbituniverse/ai/r/core/api/base
+  imageVersion: '0'
+  imageTag: $(imageVersion).$(Build.BuildId)
+
+steps:
+- powershell: |
+   $ImageVersion = 0
+   Get-Content $(dockerfile) | Where-Object {$_.Replace("`t","").Replace(' ', '') -match "^LABELversion"} | ForEach-Object {
+       If ($_.Length -gt 0) {
+           If ($_.Split("=").Length -eq 2) {
+               $ImageVersion = $_.Split("=")[1].Replace('"', '').Replace("`t","").Replace(' ', '').Replace('\', '')
+           }
+       }
+   }
+   Write-Host "##vso[task.setvariable variable=$(imageVersion);]$ImageVersion"
+  displayName: 'Read and Set imageVersion from the Dockerfile'
+
+- powershell: Write-Host "##vso[build.updatebuildnumber]$(imageTag)"
+  displayName: 'Assign Build Number'
+
+- task: Docker@2
+  displayName: 'Build and Push Image'
+  inputs:
+    containerRegistry: DockerHub
+    repository: $(repository)
+    Dockerfile: $(dockerfile)
+    buildContext: ''
+    tags: |
+      latest
+      $(imageTag)
