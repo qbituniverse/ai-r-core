@@ -4,7 +4,7 @@ pool:
 trigger:
   branches:
     include:
-    - master
+    - main
   paths:
     include:
     - .cicd/docker/Dockerfile-ai-r-core-api-base
