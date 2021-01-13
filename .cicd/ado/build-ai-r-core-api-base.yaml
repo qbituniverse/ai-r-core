@@ -12,35 +12,32 @@ trigger:
 
 pr: none
 
-variables:
-  dockerfile: '.cicd/docker/Dockerfile-ai-r-core-api-base'
-  repository: qbituniverse/ai-r-core-api-base
-  imageVersion: '0'
-  imageTag: $(imageVersion).$(Build.BuildId)
+resources:
+  repositories:
+    - repository: azure-devops-extensions
+      type: github
+      name: qbituniverse/azure-devops-extensions
+      endpoint: qbituniverse
 
-steps:
-- powershell: |
-   $ImageVersion = 0
-   Get-Content $(dockerfile) | Where-Object {$_.Replace("`t","").Replace(' ', '') -match "^LABELversion"} | ForEach-Object {
-       If ($_.Length -gt 0) {
-           If ($_.Split("=").Length -eq 2) {
-               $ImageVersion = $_.Split("=")[1].Replace('"', '').Replace("`t","").Replace(' ', '').Replace('\', '')
-           }
-       }
-   }
-   Write-Output ("##vso[task.setvariable variable=imageVersion;]$ImageVersion")
-  displayName: 'Read and Set imageVersion from the Dockerfile'
+stages:
+  - stage: DockerBuild
+    displayName: 'Build Docker Image'
+    variables:
+      imageDockerfile: .cicd/docker/Dockerfile-ai-r-core-api-base
+      imageRepository: qbituniverse/ai-r-core-api-base
+      imageTag: $(imageVersion).$(Build.BuildId)
+      imageVersion: 'N/A'
+    jobs:
+      - job: DockerBuild
+        displayName: 'Build Docker Image'
+        steps:
+        - template: builds/build-assign-number.yaml@azure-devops-extensions
+            parameters:
+              imageDockerfile: $(imageDockerfile)
+              imageTag: $(imageTag)
 
-- powershell: Write-Host "##vso[build.updatebuildnumber]$(imageTag)"
-  displayName: 'Assign Build Number'
-
-- task: Docker@2
-  displayName: 'Build and Push Image'
-  inputs:
-    containerRegistry: DockerHub
-    repository: $(repository)
-    Dockerfile: $(dockerfile)
-    buildContext: ''
-    tags: |
-      latest
-      $(imageTag)
+        - template: builds/build-docker.yaml@azure-devops-extensions
+            parameters:
+              imageRepository: $(imageRepository)
+              imageDockerfile: $(imageDockerfile)
+              imageTag: $(imageTag)
