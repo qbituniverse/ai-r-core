@@ -1,4 +1,4 @@
-FROM qbituniverse/ai-r-core-api-base:3.5.233
+FROM qbituniverse/ai-r-core-api-base:3.5.234
 
 LABEL version="3.5" \
  	  description="Base Image for use with R Api Deployment plus Java" \
