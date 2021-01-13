@@ -27,7 +27,7 @@ steps:
            }
        }
    }
-   Write-Host "##vso[task.setvariable variable=$(imageVersion);]$ImageVersion"
+   Write-Output ("##vso[task.setvariable variable=imageVersion;]$ImageVersion")
   displayName: 'Read and Set imageVersion from the Dockerfile'
 
 - powershell: Write-Host "##vso[build.updatebuildnumber]$(imageTag)"
