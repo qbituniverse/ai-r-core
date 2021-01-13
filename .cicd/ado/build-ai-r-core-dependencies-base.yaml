@@ -7,8 +7,8 @@ trigger:
     - main
   paths:
     include:
-    - .cicd/docker/Dockerfile-ai-r-core-api-base
-    - .cicd/ado/build-ai-r-core-api-base.yaml
+    - .cicd/docker/Dockerfile-ai-r-core-dependencies-base
+    - .cicd/ado/build-ai-r-core-dependencies-base.yaml
 
 pr: none
 
@@ -23,8 +23,8 @@ stages:
 - stage: DockerBuild
   displayName: 'Build Docker Image'
   variables:
-    imageDockerfile: .cicd/docker/Dockerfile-ai-r-core-api-base
-    imageRepository: qbituniverse/ai-r-core-api-base
+    imageDockerfile: .cicd/docker/Dockerfile-ai-r-core-dependencies-base
+    imageRepository: qbituniverse/ai-r-core-dependencies-base
     imageTag: $(imageVersion).$(Build.BuildId)
     imageVersion: 'N/A'
   jobs:
