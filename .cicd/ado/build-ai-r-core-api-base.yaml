@@ -14,30 +14,30 @@ pr: none
 
 resources:
   repositories:
-    - repository: azure-devops-extensions
-      type: github
-      name: qbituniverse/azure-devops-extensions
-      endpoint: qbituniverse
+  - repository: azure-devops-extensions
+    type: github
+    name: qbituniverse/azure-devops-extensions
+    endpoint: qbituniverse
 
 stages:
-  - stage: DockerBuild
+- stage: DockerBuild
+  displayName: 'Build Docker Image'
+  variables:
+    imageDockerfile: .cicd/docker/Dockerfile-ai-r-core-api-base
+    imageRepository: qbituniverse/ai-r-core-api-base
+    imageTag: $(imageVersion).$(Build.BuildId)
+    imageVersion: 'N/A'
+  jobs:
+  - job: DockerBuild
     displayName: 'Build Docker Image'
-    variables:
-      imageDockerfile: .cicd/docker/Dockerfile-ai-r-core-api-base
-      imageRepository: qbituniverse/ai-r-core-api-base
-      imageTag: $(imageVersion).$(Build.BuildId)
-      imageVersion: 'N/A'
-    jobs:
-      - job: DockerBuild
-        displayName: 'Build Docker Image'
-        steps:
-        - template: builds/build-assign-number.yaml@azure-devops-extensions
-            parameters:
-              imageDockerfile: $(imageDockerfile)
-              imageTag: $(imageTag)
+    steps:
+    - template: builds/build-assign-number.yaml@azure-devops-extensions
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
 
-        - template: builds/build-docker.yaml@azure-devops-extensions
-            parameters:
-              imageRepository: $(imageRepository)
-              imageDockerfile: $(imageDockerfile)
-              imageTag: $(imageTag)
+    - template: builds/build-docker.yaml@azure-devops-extensions
+      parameters:
+        imageRepository: $(imageRepository)
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
