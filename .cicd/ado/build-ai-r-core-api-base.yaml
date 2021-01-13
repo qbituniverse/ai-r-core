@@ -23,7 +23,7 @@ stages:
 - stage: DockerBuild
   displayName: 'Build Docker Image'
   variables:
-    imageDockerfile: '.cicd/docker/Dockerfile-ai-r-core-api-base'
+    imageDockerfile: .cicd/docker/Dockerfile-ai-r-core-api-base
     imageRepository: qbituniverse/ai-r-core-api-base
     imageTag: $(imageVersion).$(Build.BuildId)
     imageVersion: 'N/A'
