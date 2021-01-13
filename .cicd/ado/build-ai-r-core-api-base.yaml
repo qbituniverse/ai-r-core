@@ -13,7 +13,7 @@ pr: none
 
 variables:
   dockerfile: '.cicd/docker/Dockerfile-ai-r-core-api-base'
-  repository: qbituniverse/ai/r/core/api/base
+  repository: qbituniverse/ai-r-core-api-base
   imageVersion: '0'
   imageTag: $(imageVersion).$(Build.BuildId)
 
