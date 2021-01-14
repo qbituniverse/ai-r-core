@@ -1,10 +1,10 @@
-FROM rocker/r-ver:3.5.0
+FROM rocker/r-ver:4.0.3
 
-LABEL version="3.5" \
+LABEL version="4.0" \
 	  description="Base Image for use with R Core Dependencies" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
-RUN rm -rf /usr/lib/R/library && \
+RUN	rm -rf /usr/lib/R/library && \
 	R -e "update.packages(repos = 'http://cran.rstudio.com', lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
 	R -e "update.packages(repos = 'http://cran.rstudio.com', lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
 	rm -rf /var/lib/apt/lists/ && \
