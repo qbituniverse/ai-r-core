@@ -1,6 +1,6 @@
-FROM qbituniverse/ai-r-core-dependencies-base:3.5.236
+FROM qbituniverse/ai-r-core-dependencies-base:4.0.241
 
-LABEL version="3.5" \
+LABEL version="4.0" \
 	  description="Base Image for use with R Core Dependencies plus Java" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
