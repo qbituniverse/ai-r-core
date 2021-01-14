@@ -1,12 +1,12 @@
-FROM rocker/rstudio:3.5.0
+FROM rocker/rstudio:4.0.3
 
-LABEL version="3.5" \
+LABEL version="4.0" \
 	  description="Base Image for use with R Studio Development" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
 ENV ROOT=TRUE
 
-RUN rm -rf /usr/lib/R/library && \
+RUN	rm -rf /usr/lib/R/library && \
 	mkdir -p /projects && \
 	mkdir -p /projects/settings && \
 	mkdir -p /projects/repositories && \
