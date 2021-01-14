@@ -1,6 +1,6 @@
-FROM qbituniverse/ai-r-core-studio-base:3.5.238
+FROM qbituniverse/ai-r-core-studio-base:4.0.242
 
-LABEL version="3.5" \
+LABEL version="4.0" \
  	  description="Base Image for use with R Studio Development plus Java" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
