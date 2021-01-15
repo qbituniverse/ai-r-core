@@ -1,4 +1,4 @@
-FROM qbituniverse/ai-r-core-studio-base:4.0.253
+FROM qbituniverse/ai-r-core-studio-base:4.0.256
 
 LABEL version="4.0" \
  	  description="Base Image for use with R Studio with Java" \
