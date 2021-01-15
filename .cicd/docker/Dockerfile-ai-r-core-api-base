@@ -1,16 +1,14 @@
 FROM rocker/r-ver:4.0.3
 
 LABEL version="4.0" \
- 	  description="Base Image for use with R Api Deployment" \
+ 	  description="Base Image for use with R Api" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
-RUN	rm -rf /usr/lib/R/library && \
-	mkdir -p /projects && \
-	mkdir -p /projects/repositories && \
-	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
+RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
 	R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
 	R -e "install.packages('plumber', lib = '/usr/local/lib/R/site-library')" && \
-	rm -rf /var/lib/apt/lists/ && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+	rm -rf /usr/lib/R/library && \
+	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /tmp/*
 
 EXPOSE 8000
