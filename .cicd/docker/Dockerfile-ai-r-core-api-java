@@ -1,7 +1,7 @@
-FROM qbituniverse/ai-r-core-api-base:4.0.246
+FROM qbituniverse/ai-r-core-api-base:4.0.252
 
 LABEL version="4.0" \
- 	  description="Base Image for use with R Api Deployment plus Java" \
+ 	  description="Base Image for use with R Api with Java" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 	
 RUN apt-get update && \
@@ -11,8 +11,8 @@ RUN apt-get update && \
     apt-get clean && \
 	R CMD javareconf
 	
-RUN	rm -rf /usr/lib/R/library && \
-	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
+RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
 	R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
-	rm -rf /var/lib/apt/lists/ && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+	rm -rf /usr/lib/R/library && \
+	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /tmp/*
