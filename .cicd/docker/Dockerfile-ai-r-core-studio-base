@@ -10,6 +10,7 @@ RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" &&
 	R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
 	rm -rf /usr/lib/R/library && \
 	rm -rf /var/lib/apt/lists/* && \
-	rm -rf /tmp/*
+	rm -rf /tmp/* && \
+	chown -R rstudio /home
 
 COPY config/rstudio/rstudio-prefs.json /home/rstudio/.config/rstudio/

@@ -2,7 +2,33 @@
     "reuse_sessions_for_project_links": true,
     "restore_source_documents": false,
     "restore_last_project": false,
-    "editor_theme": "Tomorrow Night",
+    "editor_theme": "Pastel On Dark",
     "posix_terminal_shell": "bash",
-    "source_with_echo": true
+    "source_with_echo": true,
+    "panes": {
+        "quadrants": [
+            "Source",
+            "TabSet1",
+            "Console",
+            "TabSet2"
+        ],
+        "tabSet1": [
+            "Files",
+            "Connections",
+            "Packages",
+            "Help",
+            "Build",
+            "VCS",
+            "Tutorial",
+            "Viewer",
+            "Presentation"
+        ],
+        "tabSet2": [
+            "Environment",
+            "History",
+            "Plots"
+        ],
+        "console_left_on_top": false,
+        "console_right_on_top": true
+    }
 }
