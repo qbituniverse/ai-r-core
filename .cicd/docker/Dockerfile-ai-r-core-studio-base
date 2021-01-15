@@ -1,21 +1,15 @@
 FROM rocker/rstudio:4.0.3
 
 LABEL version="4.0" \
-	  description="Base Image for use with R Studio Development" \
+	  description="Base Image for use with R Studio" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
 ENV ROOT=TRUE
 
-RUN	rm -rf /usr/lib/R/library && \
-	mkdir -p /projects && \
-	mkdir -p /projects/settings && \
-	mkdir -p /projects/repositories && \
-	mkdir -p /home/rstudio/.rstudio/monitored/user-settings && \
-	chown -R rstudio /projects && \
-	chown -R rstudio /home && \
-	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
+RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
 	R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
-	rm -rf /var/lib/apt/lists/ && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+	rm -rf /usr/lib/R/library && \
+	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /tmp/*
 
-COPY settings/r-studio/user-settings /home/rstudio/.rstudio/monitored/user-settings/
+COPY config/rstudio/rstudio-prefs.json /home/rstudio/.config/rstudio/

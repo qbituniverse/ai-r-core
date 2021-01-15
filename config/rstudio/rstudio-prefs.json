@@ -1,0 +1,8 @@
+{
+    "reuse_sessions_for_project_links": true,
+    "restore_source_documents": false,
+    "restore_last_project": false,
+    "editor_theme": "Tomorrow Night",
+    "posix_terminal_shell": "bash",
+    "source_with_echo": true
+}
