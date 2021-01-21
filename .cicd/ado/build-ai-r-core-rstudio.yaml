@@ -1,0 +1,91 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - .cicd/docker/rstudio
+    - .cicd/ado/build-ai-r-core-rstudio.yaml
+    - config/rstudio
+
+pr: none
+
+resources:
+  repositories:
+  - repository: azure-devops-extensions
+    type: github
+    name: qbituniverse/azure-devops-extensions
+    endpoint: qbituniverse
+
+stages:
+- stage: DockerBuildRStudio
+  displayName: 'Build Docker Image for RStudio'
+  variables:
+    imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
+    imageRepository: qbituniverse/ai-r-core-rstudio
+    imageTag: $(imageVersion).$(Build.BuildId)
+    imageVersion: 'N/A'
+  jobs:
+  - job: DockerBuild
+    displayName: 'Build Docker Image for RStudio'
+    steps:
+    - template: builds/build-assign-number.yaml@azure-devops-extensions
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+
+    - template: builds/build-docker.yaml@azure-devops-extensions
+      parameters:
+        imageRepository: $(imageRepository)
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+        addLatestTag: true
+
+- stage: DockerBuildRStudioJava
+  displayName: 'Build Docker Image for RStudio with Java'
+  variables:
+    imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-java
+    imageRepository: qbituniverse/ai-r-core-rstudio
+    imageTag: $(imageVersion).$(Build.BuildId)
+    imageVersion: 'N/A'
+  jobs:
+  - job: DockerBuild
+    displayName: 'Build Docker Image for RStudio with Java'
+    steps:
+    - template: builds/build-assign-number.yaml@azure-devops-extensions
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+
+    - template: builds/build-docker.yaml@azure-devops-extensions
+      parameters:
+        imageRepository: $(imageRepository)
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)-java
+        addLatestTag: false
+
+- stage: DockerBuildRStudioTidyverse
+  displayName: 'Build Docker Image for RStudio with Tidyverse'
+  variables:
+    imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-tidyverse
+    imageRepository: qbituniverse/ai-r-core-rstudio
+    imageTag: $(imageVersion).$(Build.BuildId)
+    imageVersion: 'N/A'
+  jobs:
+  - job: DockerBuild
+    displayName: 'Build Docker Image for RStudio with Tidyverse'
+    steps:
+    - template: builds/build-assign-number.yaml@azure-devops-extensions
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+
+    - template: builds/build-docker.yaml@azure-devops-extensions
+      parameters:
+        imageRepository: $(imageRepository)
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)-tidyverse
+        addLatestTag: false

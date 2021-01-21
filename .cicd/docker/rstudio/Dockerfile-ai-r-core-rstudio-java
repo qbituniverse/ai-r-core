@@ -1,8 +1,10 @@
-FROM qbituniverse/ai-r-core-studio-base:4.0.256
+FROM rocker/rstudio:4.0.3
 
 LABEL version="4.0" \
- 	  description="Base Image for use with R Studio with Java" \
+	  description="Core Image for use with R Studio plus Java" \
 	  maintainer="marcin.narloch@qbituniverse.com"
+
+ENV ROOT=TRUE
 
 RUN apt-get update && \
 	apt-get install -y \
@@ -10,9 +12,12 @@ RUN apt-get update && \
 	r-cran-rjava && \
     apt-get clean && \
 	R CMD javareconf
-	
+
 RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
 	R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
 	rm -rf /usr/lib/R/library && \
 	rm -rf /var/lib/apt/lists/* && \
-	rm -rf /tmp/*
+	rm -rf /tmp/* && \
+	chown -R rstudio /home
+
+COPY config/rstudio/rstudio-prefs.json /home/rstudio/.config/rstudio/

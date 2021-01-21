@@ -1,0 +1,90 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - .cicd/docker/api
+    - .cicd/ado/build-ai-r-core-api.yaml
+
+pr: none
+
+resources:
+  repositories:
+  - repository: azure-devops-extensions
+    type: github
+    name: qbituniverse/azure-devops-extensions
+    endpoint: qbituniverse
+
+stages:
+- stage: DockerBuildApi
+  displayName: 'Build Docker Image for Api'
+  variables:
+    imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
+    imageRepository: qbituniverse/ai-r-core-api
+    imageTag: $(imageVersion).$(Build.BuildId)
+    imageVersion: 'N/A'
+  jobs:
+  - job: DockerBuild
+    displayName: 'Build Docker Image for Api'
+    steps:
+    - template: builds/build-assign-number.yaml@azure-devops-extensions
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+
+    - template: builds/build-docker.yaml@azure-devops-extensions
+      parameters:
+        imageRepository: $(imageRepository)
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+        addLatestTag: true
+
+- stage: DockerBuildApiJava
+  displayName: 'Build Docker Image for Api with Java'
+  variables:
+    imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-java
+    imageRepository: qbituniverse/ai-r-core-api
+    imageTag: $(imageVersion).$(Build.BuildId)
+    imageVersion: 'N/A'
+  jobs:
+  - job: DockerBuild
+    displayName: 'Build Docker Image for Api with Java'
+    steps:
+    - template: builds/build-assign-number.yaml@azure-devops-extensions
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+
+    - template: builds/build-docker.yaml@azure-devops-extensions
+      parameters:
+        imageRepository: $(imageRepository)
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)-java
+        addLatestTag: false
+
+- stage: DockerBuildApiTidyverse
+  displayName: 'Build Docker Image for Api with Tidyverse'
+  variables:
+    imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-tidyverse
+    imageRepository: qbituniverse/ai-r-core-api
+    imageTag: $(imageVersion).$(Build.BuildId)
+    imageVersion: 'N/A'
+  jobs:
+  - job: DockerBuild
+    displayName: 'Build Docker Image for Api with Tidyverse'
+    steps:
+    - template: builds/build-assign-number.yaml@azure-devops-extensions
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+
+    - template: builds/build-docker.yaml@azure-devops-extensions
+      parameters:
+        imageRepository: $(imageRepository)
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)-tidyverse
+        addLatestTag: false
