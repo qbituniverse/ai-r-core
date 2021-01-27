@@ -1,0 +1,14 @@
+FROM rocker/r-ver:4.0.3
+
+LABEL version="4.0" \
+ 	  description="Core Image for use with R Api plus Tidyverse" \
+	  maintainer="marcin.narloch@qbituniverse.com"
+
+RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
+	R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
+	R -e "install.packages(c('plumber', 'tidyverse'), lib = '/usr/local/lib/R/site-library')" && \
+	rm -rf /usr/lib/R/library && \
+	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /tmp/*
+
+EXPOSE 8000
