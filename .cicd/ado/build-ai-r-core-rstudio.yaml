@@ -15,9 +15,9 @@ pr: none
 
 resources:
   repositories:
-  - repository: azure-devops-extensions
+  - repository: platformops.dev
     type: github
-    name: qbituniverse/azure-devops-extensions
+    name: qbituniverse/platformops.dev
     endpoint: qbituniverse
 
 stages:
@@ -31,26 +31,26 @@ stages:
   - job: DockerBuild
     displayName: 'Build Docker Images for RStudio'
     steps:
-    - template: builds/build-assign-number.yaml@azure-devops-extensions
+    - template: content/azure-devops/builds/assign-build-number.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
         imageTag: $(imageTag)
 
-    - template: builds/build-docker.yaml@azure-devops-extensions
+    - template: content/azure-devops/builds/build-push-docker-image.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)
         addLatestTag: true
 
-    - template: builds/build-docker.yaml@azure-devops-extensions
+    - template: content/azure-devops/builds/build-push-docker-image.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-java
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)-java
         addLatestTag: false
 
-    - template: builds/build-docker.yaml@azure-devops-extensions
+    - template: content/azure-devops/builds/build-push-docker-image.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-tidyverse
         imageRepository: $(imageRepository)

@@ -1,0 +1,15 @@
+FROM qbituniverse/ai-r-core-api:4.0.267-java
+
+LABEL version="4.0" \
+ 	  description="SAMPLE" \
+	  maintainer="SAMPLE"
+
+RUN R -e "install.packages(c('SAMPLE'), lib = '/usr/local/lib/R/site-library')" && \
+	rm -rf /usr/lib/R/library && \
+	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /tmp/*
+
+COPY /src/model/code/ /code/
+COPY /src/model/models/SAMPLE.rds /models/
+
+CMD ["Rscript", "/code/build/api.R"]

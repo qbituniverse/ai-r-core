@@ -1,0 +1,17 @@
+FROM qbituniverse/ai-r-core-rstudio:4.0.266-java
+
+LABEL version="4.0" \
+	  description="SAMPLE" \
+	  maintainer="SAMPLE"
+
+RUN R -e "install.packages(c('SAMPLE'), lib = '/usr/local/lib/R/site-library')" && \
+	rm -rf /usr/lib/R/library && \
+	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /tmp/*
+
+COPY /src/model/code/ /home/rstudio/code/
+COPY /src/model/input/ /home/rstudio/input/
+COPY /src/model/models/ /home/rstudio/models/
+
+RUN mkdir -p /home/rstudio/output && \
+	chown -R rstudio /home
