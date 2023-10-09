@@ -1,0 +1,16 @@
+pool:
+  vmImage: ubuntu-latest
+
+resources:
+  repositories:
+  - repository: platformops.dev
+    type: github
+    name: qbituniverse/platformops.dev
+    endpoint: qbituniverse
+
+steps:
+- script: |
+    docker run --privileged --rm tonistiigi/binfmt --install all
+    docker buildx create --use --bootstrap --name ado-build
+    docker buildx build --push --platform linux/amd64,linux/arm64 -t qbituniverse/local-api-buildx:$(build.buildNumber) -f .cicd/docker/Dockerfile-ai-r-core-api-buildx .
+  displayName: 'docker buildx'
