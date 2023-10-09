@@ -1,14 +1,12 @@
 pool:
   vmImage: ubuntu-latest
 
-resources:
-  repositories:
-  - repository: platformops.dev
-    type: github
-    name: qbituniverse/platformops.dev
-    endpoint: qbituniverse
-
 steps:
+- task: Docker@2
+  displayName: Login
+  inputs:
+    containerRegistry: 'DockerHub'
+    command: 'login'
 - script: |
     docker run --privileged --rm tonistiigi/binfmt --install all
     docker buildx create --use --bootstrap --name ado-build
