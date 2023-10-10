@@ -1,8 +1,16 @@
-FROM rocker/r-ver:4.0.3
+FROM rocker/r-ver:4.3
 
-LABEL version="4.0" \
+LABEL version="4.3" \
  	  description="Core Image for use with R Api" \
 	  maintainer="marcin.narloch@qbituniverse.com"
+
+RUN apt-get update -qq && \
+	apt-get install -y \
+	libz-dev \
+	libssl-dev \
+	libcurl4-gnutls-dev \
+	libsodium-dev && \
+	apt-get clean
 
 RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
 	R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
