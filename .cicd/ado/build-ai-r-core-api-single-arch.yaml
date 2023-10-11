@@ -8,7 +8,7 @@ trigger:
   paths:
     include:
     - .cicd/docker/api
-    - .cicd/ado/build-ai-r-core-api.yaml
+    - .cicd/ado/build-ai-r-core-api-single-arch.yaml
 
 pr: none
 
