@@ -28,7 +28,8 @@ stages:
     imageVersion: 'N/A'
   jobs:
   - job: DockerBuild
-    displayName: 'Build Docker Images for Api'
+    displayName: 'Build Multi-Arch Docker Images for Api'
+    timeoutInMinutes: 0
     steps:
     - template: content/azure-devops/builds/assign-build-number.yaml@platformops.dev
       parameters:
