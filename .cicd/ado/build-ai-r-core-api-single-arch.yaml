@@ -1,5 +1,5 @@
 pool:
-  name: 'agent-pool-v2'
+  vmImage: 'ubuntu-latest'
 
 trigger:
   branches:
@@ -8,7 +8,7 @@ trigger:
   paths:
     include:
     - .cicd/docker/api
-    - .cicd/ado/build-ai-r-core-api-v2.yaml
+    - .cicd/ado/build-ai-r-core-api.yaml
 
 pr: none
 
@@ -34,27 +34,24 @@ stages:
       parameters:
         imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
         imageTag: $(imageTag)
-    
-    - template: content/azure-devops/builds/build-push-docker-image-v2.yaml@platformops.dev
+
+    - template: content/azure-devops/builds/build-push-docker-image-single-arch.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)
+        addLatestTag: true
 
-    - template: content/azure-devops/builds/build-push-docker-image-v2.yaml@platformops.dev
+    - template: content/azure-devops/builds/build-push-docker-image-single-arch.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-java
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)-java
+        addLatestTag: false
 
-    - template: content/azure-devops/builds/build-push-docker-image-v2.yaml@platformops.dev
+    - template: content/azure-devops/builds/build-push-docker-image-single-arch.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-tidyverse
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)-tidyverse
-
-    - template: content/azure-devops/builds/build-push-docker-image-v2.yaml@platformops.dev
-      parameters:
-        imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
-        imageRepository: $(imageRepository)
-        imageTag: latest
+        addLatestTag: false

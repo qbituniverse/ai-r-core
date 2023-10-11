@@ -36,21 +36,21 @@ stages:
         imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
         imageTag: $(imageTag)
 
-    - template: content/azure-devops/builds/build-push-docker-image.yaml@platformops.dev
+    - template: content/azure-devops/builds/build-push-docker-image-single-arch.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)
         addLatestTag: true
 
-    - template: content/azure-devops/builds/build-push-docker-image.yaml@platformops.dev
+    - template: content/azure-devops/builds/build-push-docker-image-single-arch.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-java
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)-java
         addLatestTag: false
 
-    - template: content/azure-devops/builds/build-push-docker-image.yaml@platformops.dev
+    - template: content/azure-devops/builds/build-push-docker-image-single-arch.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-tidyverse
         imageRepository: $(imageRepository)
