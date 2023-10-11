@@ -21,14 +21,15 @@ resources:
 
 stages:
 - stage: DockerBuildApi
-  displayName: 'Build Docker Images for Api'
+  displayName: 'Build Single-Arch Docker Images for Api'
   variables:
     imageRepository: qbituniverse/ai-r-core-api
     imageTag: $(imageVersion).$(Build.BuildId)
     imageVersion: 'N/A'
   jobs:
   - job: DockerBuild
-    displayName: 'Build Docker Images for Api'
+    displayName: 'Build Single-Arch Docker Images for Api'
+    timeoutInMinutes: 0
     steps:
     - template: content/azure-devops/builds/assign-build-number.yaml@platformops.dev
       parameters:
