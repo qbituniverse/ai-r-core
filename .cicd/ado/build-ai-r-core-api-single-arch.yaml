@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'self-host-docker'
 
 trigger:
   branches:
@@ -20,7 +20,7 @@ resources:
     endpoint: qbituniverse
 
 stages:
-- stage: DockerBuildApi
+- stage: DockerBuild
   displayName: 'Build Single-Arch Docker Images for Api'
   variables:
     imageRepository: qbituniverse/ai-r-core-api

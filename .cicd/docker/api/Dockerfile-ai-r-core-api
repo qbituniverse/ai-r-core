@@ -4,18 +4,19 @@ LABEL version="4.3" \
  	  description="Core Image for use with R Api" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
-RUN apt-get update -qq && \
-	apt-get install -y \
+RUN apt-get update -qq
+RUN apt-get install -y \
 	libz-dev \
 	libssl-dev \
 	libcurl4-gnutls-dev \
 	libsodium-dev && \
 	apt-get clean
 
-RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)" && \
-	R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)" && \
-	R -e "install.packages('plumber', lib = '/usr/local/lib/R/site-library')" && \
-	rm -rf /usr/lib/R/library && \
+RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
+RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)"
+RUN R -e "install.packages('plumber', lib = '/usr/local/lib/R/site-library')"
+
+RUN rm -rf /usr/lib/R/library && \
 	rm -rf /var/lib/apt/lists/* && \
 	rm -rf /tmp/*
 
