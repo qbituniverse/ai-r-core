@@ -20,8 +20,8 @@ resources:
     endpoint: qbituniverse
 
 stages:
-- stage: DockerBuildApi
-  displayName: 'Build Docker Images for Api'
+- stage: DockerBuild
+  displayName: 'Build Multi-Arch Docker Images for Api'
   variables:
     imageRepository: qbituniverse/ai-r-core-api
     imageTag: $(imageVersion).$(Build.BuildId)
