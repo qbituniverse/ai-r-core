@@ -1,5 +1,5 @@
 pool:
-  name: 'self-host-docker'
+  name: 'self-hosted-ado-agents'
 
 trigger:
   branches:
