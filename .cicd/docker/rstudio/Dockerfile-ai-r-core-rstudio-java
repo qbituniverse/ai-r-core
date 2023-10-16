@@ -7,23 +7,14 @@ LABEL version="4.3" \
 ENV ROOT=TRUE
 
 RUN apt-get update -qq
-RUN apt-get install -y \
-	libz-dev \
-	libssl-dev \
-	libcurl4-gnutls-dev \
-	libsodium-dev && \
-	apt-get clean
-RUN default-jdk \
-	r-cran-rjava && \
-    apt-get clean && \
-	R CMD javareconf
+RUN apt-get install -y libz-dev libssl-dev libcurl4-gnutls-dev libsodium-dev
+RUN apt-get install -y default-jdk && r-cran-rjava
+RUN apt-get clean
+RUN R CMD javareconf
 
 RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
 RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)"
 
-RUN rm -rf /usr/lib/R/library && \
-	rm -rf /var/lib/apt/lists/* && \
-	rm -rf /tmp/* && \
-	chown -R rstudio /home
+RUN rm -rf /usr/lib/R/library && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/* && chown -R rstudio /home
 
 COPY config/rstudio/rstudio-prefs.json /home/rstudio/.config/rstudio/
