@@ -16,6 +16,6 @@ RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE
 RUN R -e "install.packages('rJava', lib = '/usr/local/lib/R/site-library')"
 
 RUN rm -rf /usr/lib/R/library && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/* && chown -R rstudio /home
-RUN R CMD javareconf
+#RUN R CMD javareconf
 
 COPY config/rstudio/rstudio-prefs.json /home/rstudio/.config/rstudio/

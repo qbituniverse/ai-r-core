@@ -14,6 +14,6 @@ RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE
 RUN R -e "install.packages(c('plumber', 'rJava'), lib = '/usr/local/lib/R/site-library')"
 
 RUN rm -rf /usr/lib/R/library && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
-RUN R CMD javareconf
+#RUN R CMD javareconf
 
 EXPOSE 8000
