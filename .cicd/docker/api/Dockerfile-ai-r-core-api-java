@@ -6,7 +6,7 @@ LABEL version="4.3" \
 
 RUN apt-get update -qq
 RUN apt-get install -y libz-dev libssl-dev libcurl4-gnutls-dev libsodium-dev
-RUN apt-get install -y default-jdk
+RUN apt-get install -y default-jre default-jdk r-cran-rjava
 RUN apt-get clean
 
 RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
