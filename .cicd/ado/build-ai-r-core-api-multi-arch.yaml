@@ -36,6 +36,18 @@ stages:
         imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
         imageTag: $(imageTag)
     
+    - template: content/azure-devops/builds/dockerhub-login.yaml@platformops.dev
+
+    - template: content/azure-devops/builds/create-buildx.yaml@platformops.dev
+      parameters:
+        buildNumber: $(Build.BuildId)
+    
+    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
+      parameters:
+        imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
+        imageRepository: $(imageRepository)
+        imageTag: latest
+
     - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
       parameters:
         imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
@@ -54,8 +66,6 @@ stages:
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)-tidyverse
 
-    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
+    - template: content/azure-devops/builds/delete-buildx.yaml@platformops.dev
       parameters:
-        imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
-        imageRepository: $(imageRepository)
-        imageTag: latest
+        buildNumber: $(Build.BuildId)
