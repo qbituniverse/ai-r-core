@@ -18,7 +18,7 @@ RUN default-jdk \
     apt-get clean && \
 	R CMD javareconf
 
-RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
+RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
 RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)"
 
 RUN rm -rf /usr/lib/R/library && \

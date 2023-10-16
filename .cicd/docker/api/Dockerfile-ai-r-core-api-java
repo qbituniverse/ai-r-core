@@ -1,7 +1,7 @@
 FROM rocker/r-ver:4.3
 
 LABEL version="4.3" \
- 	  description="Core Image for use with R Api plus Java" \
+	  description="Core Image for use with R Api plus Java" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
 RUN apt-get update -qq
@@ -16,7 +16,7 @@ RUN default-jdk \
     apt-get clean && \
 	R CMD javareconf
 
-RUN	R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
+RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
 RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)"
 RUN R -e "install.packages('plumber', lib = '/usr/local/lib/R/site-library')"
 
