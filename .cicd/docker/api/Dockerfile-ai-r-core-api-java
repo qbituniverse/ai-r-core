@@ -6,14 +6,14 @@ LABEL version="4.3" \
 
 RUN apt-get update -qq
 RUN apt-get install -y libz-dev libssl-dev libcurl4-gnutls-dev libsodium-dev
-RUN apt-get install -y default-jdk r-cran-rjava
+RUN apt-get install -y default-jdk
 RUN apt-get clean
-RUN R CMD javareconf
 
 RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
 RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)"
-RUN R -e "install.packages('plumber', lib = '/usr/local/lib/R/site-library')"
+RUN R -e "install.packages(c('plumber', 'rJava'), lib = '/usr/local/lib/R/site-library')"
 
 RUN rm -rf /usr/lib/R/library && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
+RUN R CMD javareconf
 
 EXPOSE 8000
