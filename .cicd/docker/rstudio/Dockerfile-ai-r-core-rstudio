@@ -1,6 +1,6 @@
-FROM rocker/rstudio:4.3
+FROM rocker/rstudio:4.3.0
 
-LABEL version="4.3" \
+LABEL version="4.3.0" \
 	  description="Core Image for use with R Studio" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 

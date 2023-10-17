@@ -1,19 +1,7 @@
-FROM rocker/rstudio:4.3
+FROM qbituniverse/ai-r-core-rstudio:4.3.0
 
-LABEL version="4.3" \
+LABEL version="4.3.0-tidyverse" \
 	  description="Core Image for use with R Studio plus Tidyverse" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
-ENV ROOT=TRUE
-
-RUN apt-get update -qq
-RUN apt-get install -y libz-dev libssl-dev libcurl4-gnutls-dev libsodium-dev
-RUN apt-get clean
-
-RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/library', ask = FALSE)"
-RUN R -e "update.packages(lib.loc = '/usr/local/lib/R/site-library', ask = FALSE)"
 RUN R -e "install.packages('tidyverse', lib = '/usr/local/lib/R/site-library')"
-
-RUN rm -rf /usr/lib/R/library && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/* && chown -R rstudio /home
-
-COPY config/rstudio/rstudio-prefs.json /home/rstudio/.config/rstudio/
