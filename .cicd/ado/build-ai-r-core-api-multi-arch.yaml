@@ -23,6 +23,7 @@ stages:
 - stage: DockerBuild
   displayName: 'Build Multi-Arch Docker Images for Api'
   variables:
+    imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
     imageRepository: qbituniverse/ai-r-core-api
     imageTag: $(imageVersion).$(Build.BuildId)
     imageVersion: 'N/A'
@@ -33,7 +34,7 @@ stages:
     steps:
     - template: content/azure-devops/builds/assign-build-number.yaml@platformops.dev
       parameters:
-        imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
+        imageDockerfile: $(imageDockerfile)
         imageTag: $(imageTag)
     
     - template: content/azure-devops/builds/dockerhub-login.yaml@platformops.dev
@@ -44,25 +45,25 @@ stages:
     
     - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
       parameters:
-        imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
+        imageDockerfile: $(imageDockerfile)
         imageRepository: $(imageRepository)
         imageTag: latest
 
     - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
       parameters:
-        imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
+        imageDockerfile: $(imageDockerfile)
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)
 
     - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
       parameters:
-        imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-java
+        imageDockerfile: $(imageDockerfile)-java
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)-java
 
     - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
       parameters:
-        imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-tidyverse
+        imageDockerfile: $(imageDockerfile)-tidyverse
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)-tidyverse
 
