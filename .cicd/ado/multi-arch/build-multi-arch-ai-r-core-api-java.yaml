@@ -7,9 +7,8 @@ trigger:
     - main
   paths:
     include:
-    - .cicd/docker/rstudio
-    - .cicd/ado/build-ai-r-core-rstudio-multi-arch.yaml
-    - config/rstudio
+    - .cicd/docker/api/Dockerfile-ai-r-core-api-java
+    - .cicd/ado/multi-arch/build-multi-arch-ai-r-core-api-java.yaml
 
 pr: none
 
@@ -22,22 +21,22 @@ resources:
 
 stages:
 - stage: DockerBuild
-  displayName: 'Build Multi-Arch Docker Images for RStudio'
+  displayName: 'Build Multi-Arch Docker Images for Api'
   variables:
-    imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
-    imageRepository: qbituniverse/ai-r-core-rstudio
-    imageTag: $(imageVersion).$(Build.BuildId)
+    imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-java
+    imageRepository: qbituniverse/ai-r-core-api
+    imageTag: $(imageVersion)-java
     imageVersion: 'N/A'
   jobs:
   - job: DockerBuild
-    displayName: 'Build Multi-Arch Docker Images for RStudio'
+    displayName: 'Build Multi-Arch Docker Images for Api'
     timeoutInMinutes: 0
     steps:
     - template: content/azure-devops/builds/assign-build-number.yaml@platformops.dev
       parameters:
         imageDockerfile: $(imageDockerfile)
         imageTag: $(imageTag)
-
+    
     - template: content/azure-devops/builds/dockerhub-login.yaml@platformops.dev
 
     - template: content/azure-devops/builds/create-buildx.yaml@platformops.dev
@@ -48,25 +47,7 @@ stages:
       parameters:
         imageDockerfile: $(imageDockerfile)
         imageRepository: $(imageRepository)
-        imageTag: latest
-
-    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
-      parameters:
-        imageDockerfile: $(imageDockerfile)
-        imageRepository: $(imageRepository)
         imageTag: $(imageTag)
-
-    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
-      parameters:
-        imageDockerfile: $(imageDockerfile)-java
-        imageRepository: $(imageRepository)
-        imageTag: $(imageTag)-java
-
-    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
-      parameters:
-        imageDockerfile: $(imageDockerfile)-tidyverse
-        imageRepository: $(imageRepository)
-        imageTag: $(imageTag)-tidyverse
 
     - template: content/azure-devops/builds/delete-buildx.yaml@platformops.dev
       parameters:

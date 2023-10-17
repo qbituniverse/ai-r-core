@@ -1,0 +1,61 @@
+pool:
+  name: 'self-hosted-ado-agents'
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
+    - .cicd/ado/multi-arch/build-multi-arch-ai-r-core-rstudio.yaml
+    - config/rstudio
+
+pr: none
+
+resources:
+  repositories:
+  - repository: platformops.dev
+    type: github
+    name: qbituniverse/platformops.dev
+    endpoint: qbituniverse
+
+stages:
+- stage: DockerBuild
+  displayName: 'Build Multi-Arch Docker Images for RStudio'
+  variables:
+    imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
+    imageRepository: qbituniverse/ai-r-core-rstudio
+    imageTag: $(imageVersion)
+    imageVersion: 'N/A'
+  jobs:
+  - job: DockerBuild
+    displayName: 'Build Multi-Arch Docker Images for RStudio'
+    timeoutInMinutes: 0
+    steps:
+    - template: content/azure-devops/builds/assign-build-number.yaml@platformops.dev
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageTag: $(imageTag)
+
+    - template: content/azure-devops/builds/dockerhub-login.yaml@platformops.dev
+
+    - template: content/azure-devops/builds/create-buildx.yaml@platformops.dev
+      parameters:
+        buildNumber: $(Build.BuildId)
+
+    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageRepository: $(imageRepository)
+        imageTag: latest
+
+    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageRepository: $(imageRepository)
+        imageTag: $(imageTag)
+
+    - template: content/azure-devops/builds/delete-buildx.yaml@platformops.dev
+      parameters:
+        buildNumber: $(Build.BuildId)

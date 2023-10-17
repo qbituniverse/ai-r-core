@@ -7,8 +7,8 @@ trigger:
     - main
   paths:
     include:
-    - .cicd/docker/api
-    - .cicd/ado/build-ai-r-core-api-multi-arch.yaml
+    - .cicd/docker/api/Dockerfile-ai-r-core-api-tidyverse
+    - .cicd/ado/multi-arch/build-multi-arch-ai-r-core-api-tidyverse.yaml
 
 pr: none
 
@@ -23,9 +23,9 @@ stages:
 - stage: DockerBuild
   displayName: 'Build Multi-Arch Docker Images for Api'
   variables:
-    imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
+    imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-tidyverse
     imageRepository: qbituniverse/ai-r-core-api
-    imageTag: $(imageVersion).$(Build.BuildId)
+    imageTag: $(imageVersion)-tidyverse
     imageVersion: 'N/A'
   jobs:
   - job: DockerBuild
@@ -42,30 +42,12 @@ stages:
     - template: content/azure-devops/builds/create-buildx.yaml@platformops.dev
       parameters:
         buildNumber: $(Build.BuildId)
-    
-    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
-      parameters:
-        imageDockerfile: $(imageDockerfile)
-        imageRepository: $(imageRepository)
-        imageTag: latest
 
     - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
       parameters:
         imageDockerfile: $(imageDockerfile)
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)
-
-    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
-      parameters:
-        imageDockerfile: $(imageDockerfile)-java
-        imageRepository: $(imageRepository)
-        imageTag: $(imageTag)-java
-
-    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
-      parameters:
-        imageDockerfile: $(imageDockerfile)-tidyverse
-        imageRepository: $(imageRepository)
-        imageTag: $(imageTag)-tidyverse
 
     - template: content/azure-devops/builds/delete-buildx.yaml@platformops.dev
       parameters:
