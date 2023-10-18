@@ -4,6 +4,7 @@ LABEL version="4.3.0.403-java" \
 	  description="Core Image for use with R Api plus Java" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
+RUN apt-get update -qq
 RUN apt-get install -y default-jre default-jdk r-cran-rjava
 RUN apt-get clean
 
