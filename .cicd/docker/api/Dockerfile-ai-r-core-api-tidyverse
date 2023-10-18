@@ -5,4 +5,5 @@ LABEL version="4.3.0.403-tidyverse" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
 RUN R -e "install.packages('tidyverse', lib = '/usr/local/lib/R/site-library')"
+
 RUN rm -rf /usr/lib/R/library && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
