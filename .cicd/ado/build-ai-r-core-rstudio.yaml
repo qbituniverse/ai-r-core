@@ -1,14 +1,12 @@
-pool:
-  name: 'self-hosted-ado-agents'
-
 trigger:
   branches:
     include:
     - main
   paths:
     include:
-    - .cicd/docker/api/Dockerfile-ai-r-core-api-tidyverse
-    - .cicd/ado/multi-arch/build-multi-arch-ai-r-core-api-tidyverse.yaml
+    - .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
+    - .cicd/ado/build-ai-r-core-rstudio.yaml
+    - config/rstudio
 
 pr: none
 
@@ -21,22 +19,27 @@ resources:
 
 stages:
 - stage: DockerBuild
-  displayName: 'Build Multi-Arch Docker Images for Api'
+  displayName: 'Build Multi-Arch Docker Images for RStudio'
+  pool:
+    name: self-hosted-ado-agents
+    demands:
+    - agent.name -equals ado-agent-amd64
   variables:
-    imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api-tidyverse
-    imageRepository: qbituniverse/ai-r-core-api
-    imageTag: $(imageVersion)-tidyverse
+    imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio
+    imageRepository: qbituniverse/ai-r-core-rstudio
+    imageTag: $(imageVersion)
     imageVersion: 'N/A'
+    imageArchitecture: linux/amd64,linux/arm64
   jobs:
   - job: DockerBuild
-    displayName: 'Build Multi-Arch Docker Images for Api'
+    displayName: 'Build Multi-Arch Docker Images for RStudio'
     timeoutInMinutes: 0
     steps:
     - template: content/azure-devops/builds/assign-build-number.yaml@platformops.dev
       parameters:
         imageDockerfile: $(imageDockerfile)
         imageTag: $(imageTag)
-    
+
     - template: content/azure-devops/builds/dockerhub-login.yaml@platformops.dev
 
     - template: content/azure-devops/builds/create-buildx.yaml@platformops.dev
@@ -47,7 +50,15 @@ stages:
       parameters:
         imageDockerfile: $(imageDockerfile)
         imageRepository: $(imageRepository)
+        imageTag: latest
+        imageArchitecture: $(imageArchitecture)
+
+    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
+      parameters:
+        imageDockerfile: $(imageDockerfile)
+        imageRepository: $(imageRepository)
         imageTag: $(imageTag)
+        imageArchitecture: $(imageArchitecture)
 
     - template: content/azure-devops/builds/delete-buildx.yaml@platformops.dev
       parameters:

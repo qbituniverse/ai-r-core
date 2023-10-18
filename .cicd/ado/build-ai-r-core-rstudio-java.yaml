@@ -1,14 +1,11 @@
-pool:
-  name: 'self-hosted-ado-agents'
-
 trigger:
   branches:
     include:
     - main
   paths:
     include:
-    - .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-tidyverse
-    - .cicd/ado/multi-arch/build-multi-arch-ai-r-core-rstudio-tidyverse.yaml
+    - .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-java
+    - .cicd/ado/build-ai-r-core-rstudio-java.yaml
 
 pr: none
 
@@ -22,11 +19,16 @@ resources:
 stages:
 - stage: DockerBuild
   displayName: 'Build Multi-Arch Docker Images for RStudio'
+  pool:
+    name: self-hosted-ado-agents
+    demands:
+    - agent.name -equals ado-agent-amd64
   variables:
-    imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-tidyverse
+    imageDockerfile: .cicd/docker/rstudio/Dockerfile-ai-r-core-rstudio-java
     imageRepository: qbituniverse/ai-r-core-rstudio
-    imageTag: $(imageVersion)-tidyverse
+    imageTag: $(imageVersion)
     imageVersion: 'N/A'
+    imageArchitecture: linux/amd64,linux/arm64
   jobs:
   - job: DockerBuild
     displayName: 'Build Multi-Arch Docker Images for RStudio'
@@ -48,6 +50,7 @@ stages:
         imageDockerfile: $(imageDockerfile)
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)
+        imageArchitecture: $(imageArchitecture)
 
     - template: content/azure-devops/builds/delete-buildx.yaml@platformops.dev
       parameters:
