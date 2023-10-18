@@ -1,9 +1,10 @@
-FROM qbituniverse/ai-r-core-rstudio:4.3.0.XXX
+FROM qbituniverse/ai-r-core-rstudio:4.3.0.404
 
-LABEL version="4.3.0.XXX-java" \
+LABEL version="4.3.0.404-java" \
 	  description="Core Image for use with R Studio plus Java" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
+RUN apt-get update -qq
 RUN apt-get install -y default-jre default-jdk r-cran-rjava
 RUN apt-get clean
 
