@@ -1,7 +1,9 @@
-FROM qbituniverse/ai-r-core-api:4.3.0.XXX
+FROM qbituniverse/ai-r-core-api:4.3.0.403
 
-LABEL version="4.3.0.XXX-tidyverse" \
+LABEL version="4.3.0.403-tidyverse" \
 	  description="Core Image for use with R Api plus Tidyverse" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
 RUN R -e "install.packages('tidyverse', lib = '/usr/local/lib/R/site-library')"
+
+RUN rm -rf /usr/lib/R/library && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
