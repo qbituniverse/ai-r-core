@@ -26,7 +26,7 @@ stages:
   variables:
     imageDockerfile: .cicd/docker/api/Dockerfile-ai-r-core-api
     imageRepository: qbituniverse/ai-r-core-api
-    imageTag: $(imageVersion)
+    imageTag: $(imageVersion).$(Build.BuildId)
     imageVersion: 'N/A'
     imageArchitecture: linux/amd64,linux/arm64
   jobs:
