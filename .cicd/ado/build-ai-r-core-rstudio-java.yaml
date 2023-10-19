@@ -11,9 +11,9 @@ pr: none
 
 resources:
   repositories:
-  - repository: platformops.dev
+  - repository: platform-ops
     type: github
-    name: qbituniverse/platformops.dev
+    name: qbituniverse/platform-ops
     endpoint: qbituniverse
 
 stages:
@@ -34,24 +34,24 @@ stages:
     displayName: 'Build Multi-Arch Docker Images for RStudio'
     timeoutInMinutes: 0
     steps:
-    - template: content/azure-devops/builds/assign-build-number.yaml@platformops.dev
+    - template: azure-devops/builds/assign-build-number.yaml@platform-ops
       parameters:
         imageDockerfile: $(imageDockerfile)
         imageTag: $(imageTag)
 
-    - template: content/azure-devops/builds/dockerhub-login.yaml@platformops.dev
+    - template: azure-devops/builds/dockerhub-login.yaml@platform-ops
 
-    - template: content/azure-devops/builds/create-buildx.yaml@platformops.dev
+    - template: azure-devops/builds/create-buildx.yaml@platform-ops
       parameters:
         buildNumber: $(Build.BuildId)
 
-    - template: content/azure-devops/builds/build-push-docker-image-multi-arch.yaml@platformops.dev
+    - template: azure-devops/builds/build-push-docker-image-multi-arch.yaml@platform-ops
       parameters:
         imageDockerfile: $(imageDockerfile)
         imageRepository: $(imageRepository)
         imageTag: $(imageTag)
         imageArchitecture: $(imageArchitecture)
 
-    - template: content/azure-devops/builds/delete-buildx.yaml@platformops.dev
+    - template: azure-devops/builds/delete-buildx.yaml@platform-ops
       parameters:
         buildNumber: $(Build.BuildId)
