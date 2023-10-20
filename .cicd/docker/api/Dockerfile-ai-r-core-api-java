@@ -1,6 +1,6 @@
-FROM qbituniverse/ai-r-core-api:4.3.0.403
+FROM qbituniverse/ai-r-core-api:4.3.0.410
 
-LABEL version="4.3.0.403-java" \
+LABEL version="4.3.0.410-java" \
 	  description="Core Image for use with R Api plus Java" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
