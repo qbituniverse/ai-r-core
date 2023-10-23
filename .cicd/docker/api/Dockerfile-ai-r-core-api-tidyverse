@@ -1,6 +1,6 @@
 FROM qbituniverse/ai-r-core-api:4.3.0.410
 
-LABEL version="4.3.0.403-tidyverse" \
+LABEL version="4.3.0.410-tidyverse" \
 	  description="Core Image for use with R Api plus Tidyverse" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
