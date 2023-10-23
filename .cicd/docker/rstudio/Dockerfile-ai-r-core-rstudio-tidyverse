@@ -1,6 +1,6 @@
-FROM qbituniverse/ai-r-core-rstudio:4.3.0.404
+FROM qbituniverse/ai-r-core-rstudio:4.3.0.412
 
-LABEL version="4.3.0.404-tidyverse" \
+LABEL version="4.3.0.412-tidyverse" \
 	  description="Core Image for use with R Studio plus Tidyverse" \
 	  maintainer="marcin.narloch@qbituniverse.com"
 
