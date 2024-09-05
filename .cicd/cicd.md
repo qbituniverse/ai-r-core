@@ -1,6 +1,4 @@
-# ai-r-core
-
-## [ai-r-core](/README.md)/.cicd
+# .cicd
 
 Resources in this folder are used to automate R core image builds, such as R Studio and R Api (core, java, tidyverse) versions.
 

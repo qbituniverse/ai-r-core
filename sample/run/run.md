@@ -1,12 +1,10 @@
-# ai-r-core
+# Run
 
-## [ai-r-core](/README.md)/[sample](/sample/sample.md)/run
-
-### R Studio
+## R Studio
 
 Location: **sample/run/run-rstudio.sh**
 
-#### R Studio Variables
+### R Studio Variables
 
 ```bash
 dockerfile="Dockerfile-SAMPLE-rstudio"
@@ -14,7 +12,7 @@ image="qbituniverse/SAMPLE-rstudio:local"
 container="SAMPLE-rstudio"
 ```
 
-#### Start R Studio
+### Start R Studio
 
 ```bash
 # build image
@@ -27,7 +25,7 @@ docker run --name $container -d -p 8012:8787 -v $container:/home/rstudio -e DISA
 start http://localhost:8012
 ```
 
-#### Pause and Restart R Studio
+### Pause and Restart R Studio
 
 ```bash
 docker start $container
@@ -35,7 +33,7 @@ docker stop $container
 docker exec -it $container bash
 ```
 
-#### Pull Code Down from R Studio
+### Pull Code Down from R Studio
 
 ```bash
 docker cp $container:/home/rstudio/code/. ./src/model/code/
@@ -44,7 +42,7 @@ docker cp $container:/home/rstudio/output/. ./src/model/output/
 docker cp $container:/home/rstudio/models/. ./src/model/models/
 ```
 
-#### Clean-up R Studio
+### Clean-up R Studio
 
 ```bash
 docker rm -fv $container
@@ -52,11 +50,11 @@ docker volume rm -f $container
 docker rmi -f $image
 ```
 
-### R Api
+## R Api
 
 Location: **sample/run/run-rapi.sh**
 
-#### R Api Variables
+### R Api Variables
 
 ```bash
 dockerfile="Dockerfile-SAMPLE-api"
@@ -65,7 +63,7 @@ container="SAMPLE-api"
 network="SAMPLE-bridge"
 ```
 
-#### Start R Api
+### Start R Api
 
 ```bash
 # build image
@@ -79,7 +77,7 @@ docker run --name $container -d -p 8011:8000 --network=$network $image
 start http://localhost:8011/api/ping
 ```
 
-#### Pause and Restart R Api
+### Pause and Restart R Api
 
 ```bash
 docker start $container
@@ -87,7 +85,7 @@ docker stop $container
 docker exec -it $container bash
 ```
 
-#### Clean-up R Api
+### Clean-up R Api
 
 ```bash
 docker rm -fv $container

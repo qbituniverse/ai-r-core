@@ -1,6 +1,4 @@
-# ai-r-core
-
-## [ai-r-core](/README.md)/config
+# Config
 
 R Studio default configuration, such as window alignment, skin and studio settings.
 
